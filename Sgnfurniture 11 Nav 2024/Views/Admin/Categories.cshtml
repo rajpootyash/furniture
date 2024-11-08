@@ -1,0 +1,219 @@
+﻿@model Sgnfurniture.Models.MasterModel
+@{
+    ViewBag.Title = "Categories";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<style>
+    .endBox {
+        display: flex;
+        justify-content: center;
+        align-items: end;
+    }
+
+    .btn {
+        width: 7rem;
+    }
+
+    .innerHtmlDiv {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .Headings1 {
+        border-radius: 9px;
+        display: flex;
+        background: var(--bg--);
+        color: var(--color--);
+        font-size: 1.1rem;
+        box-shadow: -2px 0px 9px 1px var(--color--);
+    }
+
+    .MainHeadin {
+        text-align: center;
+        padding: 0.4rem;
+        font-style: italic;
+        font-weight: 600;
+    /*    text-shadow: 1px 1px 1px black;*/
+    }
+
+    span {
+        font-family: serif;
+        /* text-shadow: 1px 0px 1px black; */
+        font-weight: 900;
+        font-style: oblique;
+    }
+
+    .Tabel-Div {
+        box-shadow: -2px 0px 9px 1px #129bdd;
+        overflow: auto;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: -2px 0px 9px 1px #008080;
+    }
+
+    .btn {
+        font-style: oblique;
+        font-weight: 600;
+        font-family: -webkit-body;
+        height: 2rem;
+        width: 5rem;
+    }
+
+    @@media (max-width: 575.98px) {
+        /* Your CSS for extra small devices */
+        .endBox {
+            margin-top: 1rem;
+        }
+
+        th {
+            font-size: 8px;
+        }
+
+        td {
+            font-size: 8px;
+        }
+
+        .innerHtmlDiv input {
+            font-size: 0.8rem;
+            width: 3rem;
+        }
+
+        .innerHtmlDiv {
+            gap: 0.5rem;
+        }
+    }
+
+    /* Small Devices (Phones, Landscape Mode) */
+    @@media (min-width: 576px) and (max-width: 767.98px) {
+        /* Your CSS for small devices */
+    }
+
+    /* Medium Devices (Tablets) */
+    @@media (min-width: 768px) and (max-width: 991.98px) {
+        /* Your CSS for medium devices */
+    }
+</style>
+<br>
+<div class="Heading row Headings1">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+        <div style="text-align:center" class="MainHeadin"> Manage Furniture Categories</div>
+    </div><div class="col-sm-2"></div>
+</div>
+<br>
+<div class="row" style="padding: 2rem; border-radius: 12px; box-shadow: -2px 0px 9px 1px #008080; ">
+    @using (@Html.BeginForm("Categories", "Admin", FormMethod.Post))
+    {
+
+        <div id="MainDive" class="row">
+            <div class="col-md-3">
+                <span>Categories Name<span style="color:darkred">*</span></span>
+                @Html.TextBoxFor(m => m.category_name, new { @class = "form-control", id = "category_name" })
+            </div>
+            <div class="col-md-3">
+               <span>Description</span>
+                @Html.TextBoxFor(m=>m.description, new { @class = "form-control", id = "description" })
+            </div>
+            <div class="col-md-2 endBox">
+
+                <input type="button" style="" value="Save" id="Save" onclick="SaveData(this)" class="btn btn-outline-success ">
+                <input type="button" style="margin-left:1rem;display:none" id="Update" value="Update" onclick="
+    UpdateData(this)" class="btn btn-outline-info">
+                <input type="button" style="display:none" value="Cancel" id="Cancel" onclick="CancelData(this)" class="btn btn-outline-danger mx-3">
+
+            </div>
+            <div class="col-sm-2">
+
+            </div>
+        </div>
+    }
+</div>
+<br />
+<div class="row Tabel-Div">
+    <table class="table table-bordered table-responsive table-hover table-striped">
+        <thead><tr><th>Sr.No</th><th>Categories Name</th><th class="text-center" style="">Action</th></tr></thead>
+        <tbody id="MainBody"></tbody>
+    </table>
+</div>
+
+
+<script>
+
+
+   
+    ``
+
+
+
+    //function SaveData(obj) {
+    //    $.ajax({
+    //        url: `/Admin/AddMasterCategorieSave`,
+    //        type: 'Post',
+    //        data: { TabTitle: document.getElementById('TabTitle').value },
+    //        success: function (data) {
+    //            var Html = "";
+    //            data = JSON.parse(data)
+
+    //        }
+
+    //    }).done(function () { ReadyData() })
+    //}
+
+    function EditData(id, obj) {
+
+        debugger
+        $('#TabTitle').val(obj.parentNode.parentNode.parentNode.children[1].innerText)
+        document.getElementById('Update').style.display = "block";
+        $('#Update').attr('cId', id);
+        document.getElementById('Cancel').style.display = "block";
+        document.getElementById('Save').style.display = "none";
+    }
+    function CancelData(obj) {
+        debugger
+        $('#TabTitle').val('')
+        document.getElementById('Update').style.display = "none";
+        document.getElementById('Cancel').style.display = "none";
+        document.getElementById('Save').style.display = "block";
+
+    }
+    //function UpdateData(obj) {
+    //    debugger
+    //    $.ajax({
+    //        url: `/Admin/UpdateCategories`,
+    //        type: 'Post',
+    //        data: { TabTitle: document.getElementById('TabTitle').value, TabID: obj.getAttribute('cid') },
+    //        success: function (data) {
+
+    //            document.location.href = document.location.href
+    //        }, error: function () {
+
+    //        }
+
+    //    })
+    //}
+    //function Remove(obj) {
+    //    if (confirm("Would like to remove it")) {
+
+
+
+    //        $.ajax({
+    //            url: `/Admin/UpdateCategories`,
+    //            type: 'Post',
+    //            data: { mode: "delete", TabID: obj },
+    //            success: function (data) {
+
+    //                document.location.href = document.location.href
+    //            }, error: function () {
+
+    //            }
+
+    //        })
+    //    }
+    //}
+
+</script>
+
+
