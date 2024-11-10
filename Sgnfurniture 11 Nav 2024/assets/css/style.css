@@ -598,7 +598,7 @@ h6 {
 # Sidebar
 --------------------------------------------------------------*/
 .sidebar {
-  position: fixed;
+  position: relative;
   top: 60px;
   left: 0;
   bottom: 0;

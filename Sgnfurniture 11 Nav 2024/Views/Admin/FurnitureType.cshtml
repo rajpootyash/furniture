@@ -1,8 +1,122 @@
 ﻿
+@model Sgnfurniture.Models.MasterModel
 @{
     ViewBag.Title = "FurnitureType";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
-<h2>FurnitureType</h2>
+<br>
+<div style="padding:2rem">
+    <div class="Heading row Headings1">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div style="text-align:center" class="MainHeadin"> Manage Furniture Type</div>
+        </div><div class="col-sm-2"></div>
+    </div>
+    <br>
+    <div class="row" style="padding: 2rem; border-radius: 12px; box-shadow: -2px 0px 9px 1px #008080; ">
+        @using (@Html.BeginForm("FurnitureType", "Admin", FormMethod.Post, new { @id = "FormId" }))
+        {
+
+            <div id="MainDive" class="row">
+                
+                <div class="col-md-3">
+                    <span>Type Name</span>
+                    @Html.TextBoxFor(m => m.type_name, new { @class = "form-control", id = "type_name" })
+                </div>
+                <div class="col-md-3">
+                    <span>Description</span>
+                    @Html.TextBoxFor(m => m.description, new { @class = "form-control", id = "description" })
+                </div>
+                @Html.HiddenFor(m => m.mode, new { @id = "mode" })
+                @Html.HiddenFor(m => m.type_id, new { @id = "type_id" })
+                <div class="col-md-3 endBox">
+
+                    <input type="button" style="" value="Save" id="Save" mode="mode" class="btn btn-outline-success ">
+                    <input type="button" style="margin-left:1rem;display:none" id="Update" value="Update" onclick="
+    UpdateData(this)" class="btn btn-outline-info">
+                    <input type="button" style="display:none" value="Cancel" id="Cancel" onclick="CancelData(this)" class="btn btn-outline-danger mx-3">
+
+                </div>
+
+            </div>
+        }
+    </div>
+    <br />
+    <div class="row Tabel-Div">
+        <table class="table table-bordered table-responsive table-hover table-striped" id="productsTable">
+            <thead><tr><th>Sr.No</th><th>Furniture Type</th><th>Description</th><th class="text-center" style="">Action</th></tr></thead>
+            <tbody id="MainBody">
+                @if (Model != null)
+                {
+                    if (Model.lstMasterModel != null)
+                    {
+                        if (Model.lstMasterModel.Count > 0)
+                        {
+                            int i = 1;
+                            foreach (var item in Model.lstMasterModel)
+                            {
+                                <tr><td>@(i++)</td><td>@item.type_name</td><td>@item.description</td><td class="Center"><i class="bi bi-trash text-danger" onclick="DeleteData(@item.type_id)"></i><i class="bi bi-pencil-square" style="color: #22bced;" onclick="EditData(@item.type_id, this)"></i></td></tr>
+                            }
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        debugger
+        $('#productsTable').dataTable();
+    });
+    document.getElementById('Save').addEventListener('click', () => {
+        document.getElementById('mode').value = "Save";
+        document.getElementById("FormId").submit()
+    })
+
+    document.getElementById('Update').addEventListener('click', () => {
+        document.getElementById('mode').value = "Edit";
+        document.getElementById("FormId").submit()
+        CancelData(obj)
+    })
+
+    function EditData(id, obj) {
+
+        debugger
+       
+
+        document.getElementById('description').value = obj.parentElement.parentElement.childNodes[2].innerText;
+        document.getElementById('type_name').value = obj.parentElement.parentElement.childNodes[1].innerText;
+        $('#type_id').val(id);
+
+        document.getElementById('Update').style.display = "block";
+        $('#Update').attr('cId', id);
+        document.getElementById('Cancel').style.display = "block";
+        document.getElementById('Save').style.display = "none";
+    }
+    function CancelData(obj) {
+        debugger
+        $('#category_name').val('')
+        $('#description').val('')
+        document.getElementById('Update').style.display = "none";
+        document.getElementById('Cancel').style.display = "none";
+        document.getElementById('Save').style.display = "block";
+
+    }
+    function DeleteData(id) {
+        $('#subcategory_id').val(id);
+        document.getElementById('mode').value = "Delete";
+        document.getElementById("FormId").submit()
+    }
+
+
+
+</script>
+
+
+
 

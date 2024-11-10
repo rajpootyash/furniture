@@ -1,8 +1,124 @@
 ﻿
+
+@model Sgnfurniture.Models.MasterModel
 @{
     ViewBag.Title = "Subcategory";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
-<h2>Subcategory</h2>
+<br>
+<div style="padding:2rem">
+    <div class="Heading row Headings1">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <div style="text-align:center" class="MainHeadin"> Manage Furniture SubCategories</div>
+        </div><div class="col-sm-2"></div>
+    </div>
+    <br>
+    <div class="row" style="padding: 2rem; border-radius: 12px; box-shadow: -2px 0px 9px 1px #008080; ">
+        @using (@Html.BeginForm("Subcategory", "Admin", FormMethod.Post, new { @id = "FormId" }))
+        {
+
+            <div id="MainDive" class="row">
+                <div class="col-md-3">
+                    <span>Categories Name<span style="color:darkred">*</span></span>
+                    @Html.DropDownListFor(m => m.category_id, ViewBag.LstCategories as List<SelectListItem>, new { @class = "form-control", id = "category_id" })
+                </div>
+                <div class="col-md-3">
+                    <span>Sub Categories Name </span>
+                    @Html.TextBoxFor(m => m.subcategory_name, new { @class = "form-control", id = "subcategory_name" })
+                </div>
+                <div class="col-md-3">
+                    <span>Description</span>
+                    @Html.TextBoxFor(m => m.description, new { @class = "form-control", id = "description" })
+                </div>
+                @Html.HiddenFor(m => m.mode, new { @id = "mode" })
+                @Html.HiddenFor(m => m.subcategory_id, new { @id = "subcategory_id" })
+                <div class="col-md-3 endBox">
+
+                    <input type="button" style="" value="Save" id="Save" mode="mode" class="btn btn-outline-success ">
+                    <input type="button" style="margin-left:1rem;display:none" id="Update" value="Update" onclick="
+    UpdateData(this)" class="btn btn-outline-info">
+                    <input type="button" style="display:none" value="Cancel" id="Cancel" onclick="CancelData(this)" class="btn btn-outline-danger mx-3">
+
+                </div>
+                
+            </div>
+        }
+    </div>
+    <br />
+    <div class="row Tabel-Div">
+        <table class="table table-bordered table-responsive table-hover table-striped" id="productsTable">
+            <thead><tr><th>Sr.No</th><th>Categories Name</th><th>Sub Categories Name </th><th>Description</th><th class="text-center" style="">Action</th></tr></thead>
+            <tbody id="MainBody">
+                @if (Model != null)
+                {
+                    if (Model.lstMasterModel != null)
+                    {
+                        if (Model.lstMasterModel.Count > 0)
+                        {
+                            int i = 1;
+                            foreach (var item in Model.lstMasterModel)
+                            {
+                                <tr><td>@(i++)</td><td>@item.category_name</td><td>@item.subcategory_name</td><td>@item.description</td><td class="Center"><i class="bi bi-trash text-danger" onclick="DeleteData(@item.subcategory_id)"></i><i class="bi bi-pencil-square" style="color: #22bced;" onclick="EditData(@item.subcategory_id,@item.category_id, this)"></i></td></tr>
+                            }
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        debugger
+        $('#productsTable').dataTable();
+    });
+    document.getElementById('Save').addEventListener('click', () => {
+        document.getElementById('mode').value = "Save";
+        document.getElementById("FormId").submit()
+    })
+
+    document.getElementById('Update').addEventListener('click', () => {
+        document.getElementById('mode').value = "Edit";
+        document.getElementById("FormId").submit()
+        CancelData(obj)
+    })
+
+    function EditData(id, category_id, obj) {
+
+        debugger
+        $('#subcategory_id').val(id);
+       
+        document.getElementById('description').value = obj.parentElement.parentElement.childNodes[3].innerText;
+        document.getElementById('subcategory_name').value = obj.parentElement.parentElement.childNodes[2].innerText;
+        $('#category_id').val(category_id);
+
+        document.getElementById('Update').style.display = "block";
+        $('#Update').attr('cId', id);
+        document.getElementById('Cancel').style.display = "block";
+        document.getElementById('Save').style.display = "none";
+    }
+    function CancelData(obj) {
+        debugger
+        $('#category_name').val('')
+        $('#description').val('')
+        document.getElementById('Update').style.display = "none";
+        document.getElementById('Cancel').style.display = "none";
+        document.getElementById('Save').style.display = "block";
+
+    }
+    function DeleteData(id) {
+        $('#subcategory_id').val(id);
+        document.getElementById('mode').value = "Delete";
+        document.getElementById("FormId").submit()
+    }
+
+
+
+</script>
+
 

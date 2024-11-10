@@ -29,10 +29,12 @@ namespace Sgnfurniture.Models
         internal void Commit()
         {
             this.usedTransaction.Commit();
+            this.usedConnection.Close();
         }
         internal void RollBack()
         {
             this.usedTransaction.Rollback();
+            this.usedConnection.Close();
         }
     }
     public class Executer
@@ -41,7 +43,7 @@ namespace Sgnfurniture.Models
         string connectionString = "";
         public Executer()
         {
-            this.connectionString = ConfigurationManager.AppSettings.Get("con");
+            this.connectionString = ConfigurationManager.AppSettings.Get("Con");
             dataLayer = new DataLayer();
         }
         public static T getObject<T>()

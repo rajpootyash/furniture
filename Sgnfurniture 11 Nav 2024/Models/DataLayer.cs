@@ -16,7 +16,7 @@ namespace Sgnfurniture.Models
         string connectionString = "";
         public DataLayer()
         {
-            this.connectionString = ConfigurationManager.AppSettings.Get("con");
+            this.connectionString = ConfigurationManager.AppSettings.Get("Con");
         }
         internal async Task<DataTable> select(string procedure)
         {

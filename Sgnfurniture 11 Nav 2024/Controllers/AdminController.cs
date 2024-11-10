@@ -30,35 +30,111 @@ namespace NewsApplication.Controllers
         [HttpGet]
         public async Task<ActionResult>Categories()
         {
-            MasterModel model = new MasterModel();  
-            return View(model);
+            Query<MasterModel> query;
+            MasterModel master = new MasterModel();
+            query = await Task.Run(() => executer.select<MasterModel>(master, "CategorySaveEditDeletShow")).ConfigureAwait(false);
+            master.lstMasterModel = query.resultData;
+            return View(master);
         }
         [HttpPost]
         public async Task<ActionResult> Categories(MasterModel master)
         {
-            return View();
+            Query<MasterModel> query;
+            if (!string.IsNullOrEmpty(master.category_name)||master.mode == "Delete")
+            {
+                query = await Task.Run(() => executer.InsertAndGetIdentityAsync<MasterModel>(master, "CategorySaveEditDeletShow", true)).ConfigureAwait(false);
+                if (query.isSuccess)
+                {
+                    query.Commit();
+                }
+                else
+                {
+                    query.RollBack();
+                }
+            }
+            master.mode = "Data";
+            query = await Task.Run(() => executer.select<MasterModel>(master, "CategorySaveEditDeletShow")).ConfigureAwait(false);
+         MasterModel obj = new MasterModel();
+            obj.lstMasterModel= query.resultData;
+            return View(obj);
         }
 
         [HttpGet]
         public async Task<ActionResult> Subcategory()
         {
-            return View();
+            Query<MasterModel> query;
+            MasterModel master = new MasterModel();
+            query = await Task.Run(() => executer.select<MasterModel>(master, "SubcategorySaveEditDeletShow")).ConfigureAwait(false);
+            master.lstMasterModel = query.resultData;
+          
+            var lst =  await Task.Run(() => executer.select<SelectListItem>( "GetCategoryLst")).ConfigureAwait(false);
+            lst.resultData.Add(bussinessLayer.AddDefoultlstDropdwon());
+            lst.resultData.Reverse();
+            ViewBag.LstCategories=lst.resultData;
+            return View(master);
         }
 
         [HttpPost]
         public async Task<ActionResult> Subcategory(MasterModel master)
         {
-            return View();
+            Query<MasterModel> query;
+            if (!string.IsNullOrEmpty(master.subcategory_name) || master.mode == "Delete")
+            {
+                query = await Task.Run(() => executer.InsertAndGetIdentityAsync<MasterModel>(master, "SubcategorySaveEditDeletShow", true)).ConfigureAwait(false);
+                if (query.isSuccess)
+                {
+                    query.Commit();
+                }
+                else
+                {
+                    query.RollBack();
+                }
+            }
+            master.mode = "Data";
+            query = await Task.Run(() => executer.select<MasterModel>(master, "SubcategorySaveEditDeletShow")).ConfigureAwait(false);
+            MasterModel obj = new MasterModel();
+            obj.lstMasterModel = query.resultData;
+
+            var lst = await Task.Run(() => executer.select<SelectListItem>("GetCategoryLst")).ConfigureAwait(false);
+            lst.resultData.Add(bussinessLayer.AddDefoultlstDropdwon());
+            lst.resultData.Reverse();
+            ViewBag.LstCategories = lst.resultData;
+            return View(obj);
         }
         [HttpGet]
         public async Task<ActionResult> FurnitureType()
         {
-            return View();
+            Query<MasterModel> query;
+            MasterModel master = new MasterModel();
+            query = await Task.Run(() => executer.select<MasterModel>(master, "Furniture_Type_SaveEditDeletShow")).ConfigureAwait(false);
+            master.lstMasterModel = query.resultData;
+
+            return View(master);
         }
         [HttpPost]
         public async Task<ActionResult> FurnitureType(MasterModel master)
         {
-            return View();
+            Query<MasterModel> query;
+            if (!string.IsNullOrEmpty(master.type_name) || master.mode == "Delete")
+            {
+                query = await Task.Run(() => executer.InsertAndGetIdentityAsync<MasterModel>(master, "Furniture_Type_SaveEditDeletShow", true)).ConfigureAwait(false);
+                if (query.isSuccess)
+                {
+                    query.Commit();
+                }
+                else
+                {
+                    query.RollBack();
+                }
+            }
+            master.mode = "Data";
+            query = await Task.Run(() => executer.select<MasterModel>(master, "Furniture_Type_SaveEditDeletShow")).ConfigureAwait(false);
+            MasterModel obj = new MasterModel();
+            obj.lstMasterModel = query.resultData;
+
+         
+     
+            return View(obj);
         }
 
         [HttpGet]

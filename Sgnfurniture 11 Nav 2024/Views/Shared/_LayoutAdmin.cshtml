@@ -1,11 +1,11 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-    <title>News Portal</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @*@Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")*@
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -25,26 +25,135 @@
     <link href="~/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
     <link href="~/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
     <link href="~/assets/vendor/simple-datatables/style.css" rel="stylesheet">
-    <link href="~/Scripts/ckeditor/contents.css" rel="stylesheet" />
 
     <!-- Template Main CSS File -->
     <link href="~/assets/css/style.css" rel="stylesheet">
 
-    <!-- =======================================================
-    * Template Name: NiceAdmin
-    * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-    * Updated: Apr 20 2024 with Bootstrap v5.3.3
-    * Author: BootstrapMade.com
-    * License: https://bootstrapmade.com/license/
-    ======================================================== -->
+
+    <!-- DataTables Bootstrap Integration CSS -->
+    <link rel="stylesheet" href="~/Content/DataTables/css/dataTables.bootstrap5.min.css" />
+
+    <!-- DataTables Bootstrap Integration JS -->
+    <script src="~/Scripts/DataTables/dataTables.bootstrap5.min.js"></script>
     <style>
+        .endBox {
+            display: flex;
+            justify-content: center;
+            align-items: end;
+        }
+
+        .btn {
+            width: 7rem;
+        }
+
+        .innerHtmlDiv {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .Headings1 {
+            border-radius: 9px;
+            display: flex;
+            background: var(--bg--);
+            color: var(--color--);
+            font-size: 1.1rem;
+            box-shadow: -2px 0px 9px 1px var(--color--);
+        }
+
+        .MainHeadin {
+            text-align: center;
+            padding: 0.4rem;
+            font-style: italic;
+            font-weight: 600;
+            /*    text-shadow: 1px 1px 1px black;*/
+        }
+
+        span {
+            font-family: serif;
+            /* text-shadow: 1px 0px 1px black; */
+            font-weight: 900;
+            font-style: oblique;
+        }
+
+        .Tabel-Div {
+            box-shadow: -2px 0px 9px 1px #129bdd;
+            overflow: auto;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: -2px 0px 9px 1px #008080;
+        }
+
+        .btn {
+            font-style: oblique;
+            font-weight: 600;
+            font-family: -webkit-body;
+            height: 2rem;
+            width: 5rem;
+        }
+
+        @@media (max-width: 575.98px) {
+            /* Your CSS for extra small devices */
+            .endBox {
+                margin-top: 1rem;
+            }
+
+            th {
+                font-size: 8px;
+            }
+
+            td {
+                font-size: 8px;
+            }
+
+            .innerHtmlDiv input {
+                font-size: 0.8rem;
+                width: 3rem;
+            }
+
+            .innerHtmlDiv {
+                gap: 0.5rem;
+            }
+        }
+
+        /* Small Devices (Phones, Landscape Mode) */
+        @@media (min-width: 576px) and (max-width: 767.98px) {
+            /* Your CSS for small devices */
+        }
+
+        /* Medium Devices (Tablets) */
+        @@media (min-width: 768px) and (max-width: 991.98px) {
+            /* Your CSS for medium devices */
+        }
+    </style>
+    <style>
+
+        .SlideData {
+            position: absolute;
+            left: 1%;
+            transition: all 0.3s;
+        }
+
+        #MainDiv {
+            right: -29%;
+            top: 3.8rem;
+            /* top: 47%; */
+            position: absolute;
+            width: 100vw;
+        }
+
+        .Center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
+
         :root {
             --bg--: #dbe0c4;
             --color--: #0b404c;
         }
-    </style>
-
-    <style>
         /* Basic styling for the progress indicator */
         #progress {
             display: none;
@@ -134,19 +243,18 @@
             /* Your CSS for dark mode */
         }
     </style>
+
 </head>
-
 <body style="background:#fff">
-
     <!-- ======= Header ======= -->
     <header id="header" class="header fixed-top d-flex align-items-center" style="background:var(--bg--)">
 
         <div class="d-flex align-items-center justify-content-between">
-            <a href="index.html" class="logo d-flex align-items-center" style="text-decoration:none">
+            <a href="index.html" class="logo d-flex align-items-center">
                 <img src="assets/img/logo.png" alt="">
-                <span class="d-none d-lg-block" style="color:var(--color--)">Websites</span>
+                <span class="d-none d-lg-block" style="color:var(--color--)">NiceAdmin</span>
             </a>
-            <i class="bi bi-list toggle-sidebar-btn" style="color: var(--color--)"></i>
+            <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
 
         <div class="search-bar">
@@ -168,13 +276,13 @@
                 <li class="nav-item dropdown">
 
                     <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-                        <i class="bi bi-bell" style="color:#fff"></i>
-                        <span class="badge bg-primary badge-number">0</span>
+                        <i class="bi bi-bell"></i>
+                        <span class="badge bg-primary badge-number">4</span>
                     </a><!-- End Notification Icon -->
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
                         <li class="dropdown-header">
-                            notifications
+                            You have 4 new notifications
                             <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
                         </li>
                         <li>
@@ -184,14 +292,57 @@
                         <li class="notification-item">
                             <i class="bi bi-exclamation-circle text-warning"></i>
                             <div>
-                                <h4>No new Notification Found.</h4>
-
+                                <h4>Lorem Ipsum</h4>
+                                <p>Quae dolorem earum veritatis oditseno</p>
+                                <p>30 min. ago</p>
                             </div>
                         </li>
 
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
 
+                        <li class="notification-item">
+                            <i class="bi bi-x-circle text-danger"></i>
+                            <div>
+                                <h4>Atque rerum nesciunt</h4>
+                                <p>Quae dolorem earum veritatis oditseno</p>
+                                <p>1 hr. ago</p>
+                            </div>
+                        </li>
 
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
 
+                        <li class="notification-item">
+                            <i class="bi bi-check-circle text-success"></i>
+                            <div>
+                                <h4>Sit rerum fuga</h4>
+                                <p>Quae dolorem earum veritatis oditseno</p>
+                                <p>2 hrs. ago</p>
+                            </div>
+                        </li>
+
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li class="notification-item">
+                            <i class="bi bi-info-circle text-primary"></i>
+                            <div>
+                                <h4>Dicta reprehenderit</h4>
+                                <p>Quae dolorem earum veritatis oditseno</p>
+                                <p>4 hrs. ago</p>
+                            </div>
+                        </li>
+
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li class="dropdown-footer">
+                            <a href="#">Show all notifications</a>
+                        </li>
 
                     </ul><!-- End Notification Dropdown Items -->
 
@@ -200,13 +351,13 @@
                 <li class="nav-item dropdown">
 
                     <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-                        <i class="bi bi-chat-left-text" style="color:#fff"></i>
-                        <span class="badge bg-success badge-number">0</span>
+                        <i class="bi bi-chat-left-text"></i>
+                        <span class="badge bg-success badge-number">3</span>
                     </a><!-- End Messages Icon -->
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-                        <li class="dropdown-header" style="color:#fff">
-                            You have 0 messages
+                        <li class="dropdown-header">
+                            You have 3 new messages
                             <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
                         </li>
                         <li>
@@ -215,27 +366,62 @@
 
                         <li class="message-item">
                             <a href="#">
-                                <img src="~/assets/img/messages-1.jpg" alt="" class="rounded-circle">
+                                <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
                                 <div>
-                                    <h4>Thanks For Visiting.</h4>
-
+                                    <h4>Maria Hudson</h4>
+                                    <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                                    <p>4 hrs. ago</p>
                                 </div>
                             </a>
                         </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
 
+                        <li class="message-item">
+                            <a href="#">
+                                <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
+                                <div>
+                                    <h4>Anna Nelson</h4>
+                                    <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                                    <p>6 hrs. ago</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li class="message-item">
+                            <a href="#">
+                                <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
+                                <div>
+                                    <h4>David Muldon</h4>
+                                    <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                                    <p>8 hrs. ago</p>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li class="dropdown-footer">
+                            <a href="#">Show all messages</a>
+                        </li>
 
                     </ul><!-- End Messages Dropdown Items -->
 
                 </li><!-- End Messages Nav -->
 
-                <li class="nav-item dropdown pe-3" style="position:relative">
+                <li class="nav-item dropdown pe-3">
 
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                        <img src="~/assets/img/RahulFounder.jfif" alt="Profile" class="rounded-circle">
-                        <span class="d-none d-md-block dropdown-toggle ps-2" onclick="ShowHide(this)" style="color:#fff">@Session["UserName"]</span>
+                        <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                        <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
                     </a><!-- End Profile Iamge Icon -->
 
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile" id="ProfilDashboard" style=" position: absolute; left: -8.3rem; top: 3rem !important;">
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                         <li class="dropdown-header">
                             <h6>Kevin Anderson</h6>
                             <span>Web Designer</span>
@@ -289,101 +475,80 @@
 
     </header><!-- End Header -->
     <!-- ======= Sidebar ======= -->
-    <aside id="sidebar" class="sidebar">
+    <div style=" width: 100vw; height: 100vh; display: flex;">
 
-        <ul class="sidebar-nav" id="sidebar-nav">
+        <aside id="sidebar" class="sidebar">
 
-            <li class="nav-item">
-                <a class="nav-link " href="index.html" data-id="Dashboard">
-                    <i class="bi bi-grid"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li><!-- End Dashboard Nav -->
+            <ul class="sidebar-nav" id="sidebar-nav">
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#forms-nav1" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-journal-text"></i><span>Forms</span><i class="bi bi-chevron-down ms-auto"></i>
-                </a>
-                <ul id="forms-nav1" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                    <li>
-                        <a href="forms-elements.html">
-                            <i class="bi bi-circle"></i><span>Form Elements</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="forms-layouts.html">
-                            <i class="bi bi-circle"></i><span>Form Layouts</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="forms-editors.html">
-                            <i class="bi bi-circle"></i><span>Form Editors</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="forms-validation.html">
-                            <i class="bi bi-circle"></i><span>Form Validation</span>
-                        </a>
-                    </li>
-                </ul>
-            </li><!-- End Forms Nav -->
+                <li class="nav-item">
+                    <a class="nav-link " href="index.html">
+                        <i class="bi bi-grid"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li><!-- End Dashboard Nav -->
+
+                <li class="nav-item">
+                    <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                        <i class="bi bi-menu-button-wide"></i><span>Master Data</span><i class="bi bi-chevron-down ms-auto"></i>
+                    </a>
+                    <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                        <li>
+                            <a href="/Admin/Categories">
+                                <i class="bi bi-circle"></i><span>Manage Categories</span>
+                            </a>
 
 
+                        </li>
 
+                        <li>
+                            <a href="/Admin/Subcategory" data-id="MasterCategories">
+                                <i class="bi bi-circle"></i><span>Manage Subcategory</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Admin/FurnitureType" data-id="MasterCategories">
+                                <i class="bi bi-circle"></i><span>Manage Furniture Type</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Admin/FurnitureMaterial">
+                                <i class="bi bi-circle"></i><span>Manage Furniture Material</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Admin/FurnitureShape">
+                                <i class="bi bi-circle"></i><span>Manage Furniture Shape</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/Admin/FurnitureColor">
+                                <i class="bi bi-circle"></i><span>Manage Furniture Color</span>
+                            </a>
+                        </li>
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#"  data-id="ManageMasterData">
-                <i class="bi bi-box-arrow-down-right"></i>
-            <span>Master Data</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-                <ul id="components-nav" class="nav-content collapse  show" data-bs-parent="#sidebar-nav">
-                    <li id="Visitor4" class="nav-item" onclick="GetLink(this)">
-                        <a href="/Admin/Categories" class="nav-link">
-                            <i class="bi bi-circle"></i><span>Manage Categories</span>
-                        </a>
-                    </li>
-                    <li id="Visitor" class="nav-item" onclick="GetLink(this)">
-                        <a href="/Admin/Subcategory" class="nav-link" data-id="MasterCategories">
-                            <i class="bi bi-circle"></i><span>Manage Subcategory</span>
-                        </a>
-                    </li>
-                    <li id="Visitor1" class="nav-item" onclick="GetLink(this)">
-                        <a href="/Admin/FurnitureType" class="nav-link" data-id="MasterCategories">
-                            <i class="bi bi-circle"></i><span>Manage Furniture Type</span>
-                        </a>
-                    </li>
-                    <li id="Visitor2" class="nav-item" onclick="GetLink(this)">
-                        <a href="/Admin/FurnitureMaterial" class="nav-link">
-                            <i class="bi bi-circle"></i><span>Manage Furniture Material</span>
-                        </a>
-                    </li>
-                    <li id="Visitor8" class="nav-item" onclick="GetLink(this)">
-                        <a href="/Admin/FurnitureShape" class="nav-link">
-                            <i class="bi bi-circle"></i><span>Manage Furniture Shape</span>
-                        </a>
-                    </li>
-
-                    <li id="Visitor3" class="nav-item" onclick="GetLink(this)">
-                        <a href="/Admin/FurnitureColor" class="nav-link">
-                            <i class="bi bi-circle"></i><span>Manage Furniture Color</span>
-                        </a>
-                    </li>
-
-                </ul>
-            </li><!-- End Components Nav -->
-
-        </ul>
-    </aside><!-- End Sidebar-->
-    <main id="main" class="main" style="background:#fff">
-        @RenderBody()
-
-    </main>
+                    </ul>
+                </li><!-- End Components Nav -->
 
 
 
+
+
+
+            </ul>
+
+        </aside><!-- End Sidebar-->
+
+
+        <div class="container-fluid body-content" style=" margin-top: 4rem;" id="MainPanel">
+            @RenderBody()
+            <hr />
+
+        </div>
+
+    </div>
 
     <!-- Vendor JS Files -->
-    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
     <script src="~/assets/vendor/apexcharts/apexcharts.min.js"></script>
     <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/vendor/chart.js/chart.umd.js"></script>
@@ -391,49 +556,26 @@
     <script src="~/assets/vendor/quill/quill.js"></script>
     <script src="~/assets/vendor/simple-datatables/simple-datatables.js"></script>
     <script src="~/assets/vendor/tinymce/tinymce.min.js"></script>
-    <script src="~/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/assets/vendor/php-email-form/validate.js"></script>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="~/Content/DataTables/css/jquery.dataTables.min.css" />
+
+    <!-- jQuery -->
+    <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+
+    <!-- DataTables JS -->
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script>
+        document.querySelector('.toggle-sidebar-btn').addEventListener('click', () => {
+
+            document.getElementById('MainPanel').classList.toggle('SlideData')
+        })
+    </script>
     <!-- Template Main JS File -->
+
     <script src="~/assets/js/main.js"></script>
-
-    @*<script src="~/Scripts/bootstrap.min.js"></script>*@
-    @*<script src="~/Scripts/jquery-3.4.1.js"></script>
-    <script src="~/Scripts/jquery-3.4.1.min.js"></script>*@
-    @*<script>
-        $(document).ready(function () {
-            debugger
-            // Get the active link ID from local storage
-            var activeLink = localStorage.getItem('activeLink');
-
-            // If there is an active link saved, set it as active
-            if (activeLink) {
-                $('.nav-link').removeClass('active');
-                /*$(`.nav-link[data-id="${activeLink}"]`).addClass('active');*/
-                document.getElementById(activeLink).children[0].classList.add('active');
-                localStorage.clear()
-            }
-
-            // On link click, update the active link in local storage
-            $('.nav-link').on('click', function () {
-                $('.nav-link').removeClass('active');
-                $(this).addClass('active');
-
-                // Save the clicked link's ID to local storage
-                var id = $(this).data('id');
-                localStorage.setItem('activeLink', id);
-            });
-        });
-
-        function GetLink(obj) {
-            debugger
-            var ds = obj.id
-            localStorage.clear()
-            var activeLink = localStorage.setItem("activeLink", ds);
-
-        }
-
-   
-    </script>*@
+    @Scripts.Render("~/bundles/jquery")
+    @*@Scripts.Render("~/bundles/bootstrap")*@
+    @RenderSection("scripts", required: false)
 </body>
-
 </html>
